@@ -1,0 +1,5 @@
+
+pseudo-db/.gradle/*
+pseudo-db/.idea/*
+code/.gradle/*
+code/.idea/*
