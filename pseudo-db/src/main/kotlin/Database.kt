@@ -12,6 +12,17 @@ class DatabaseConnection {
         )
         if (environment.createDb()) {
             transaction(database) {
+                val name1 = randomString()
+                val name2 = randomString()
+                val id = randomId()
+                Users.update {
+                    it[system_id] = id
+                    it[lastname] = randomName(name1)
+                    it[firstname] = randomName(name2)
+                    it[email] = randomEmail(name2, name1)
+                    it[registration] = randomRegistration()
+                    it[campus_id] = id
+                }
             }
         }
     }
