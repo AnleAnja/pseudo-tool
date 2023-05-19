@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val exposedVersion = "0.40.1"
+val exposedVersion = "0.41.1"
 val postgresVersion = "42.5.0"
 dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
