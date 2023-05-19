@@ -1,5 +1,8 @@
+import Users.status
+import Users.system_id
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
@@ -15,22 +18,24 @@ object DatabaseConnection {
         if (environment.createDb()) {
             try {
                 transaction(database) {
-                    val name1 = randomString()
-                    val name2 = randomString()
-                    val id = randomId()
-                    Users.update {
-                        it[system_id] = id
-                        it[lastname] = randomName(name1)
-                        it[firstname] = randomName(name2)
-                        it[email] = randomEmail(name2, name1)
-                        it[registration] = randomRegistration()
-                        it[campus_id] = id
+                    Users.selectAll().filter { it[status] == "student" }.forEach { user ->
+                        val name1 = randomString()
+                        val name2 = randomString()
+                        val id = randomId()
+                        Users.update ({system_id eq user[system_id]}) {
+                            it[system_id] = id
+                            it[lastname] = randomName(name1)
+                            it[firstname] = randomName(name2)
+                            it[email] = randomEmail(name2, name1)
+                            it[registration_id] = randomRegistration()
+                            it[campus_id] = id
+                        }
                     }
                 }
             } catch (e: ExposedSQLException) {
-            println(e.message)
-            e.printStackTrace()
-        }
+                println(e.message)
+                e.printStackTrace()
+            }
         }
     }
 }
